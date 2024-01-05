@@ -10,7 +10,11 @@ const StatisticLine = (props) => {
   const {value, text} = props
   console.log(props)
   return(
-    <p>{text} {value}</p>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+    
   )
 }
 const Statistics = (props) => {
@@ -31,12 +35,17 @@ const Statistics = (props) => {
     <h1>statistics</h1>
     {totalComentarios() > 0 &&
       <>
-      <StatisticLine text ='good' value={good}/>
-      <StatisticLine text ='neutral' value={neutral}/>
-      <StatisticLine text ='bad' value={bad}/>
-      <StatisticLine text ='all' value={totalComentarios()}/>
-      <StatisticLine text='average' value={puntuacionPromedio()}/>
-      <StatisticLine text='positive' value={porcentajeComPositivos()}/>
+      <table>
+        <tbody>
+          <StatisticLine text ='good' value={good}/>
+          <StatisticLine text ='neutral' value={neutral}/>
+          <StatisticLine text ='bad' value={bad}/>
+          <StatisticLine text ='all' value={totalComentarios()}/>
+          <StatisticLine text='average' value={puntuacionPromedio()}/>
+          <StatisticLine text='positive' value={porcentajeComPositivos()}/>
+      </tbody>
+      </table>
+      
       </>
     }
 
