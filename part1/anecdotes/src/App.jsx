@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 const App = () => {
+  // Estado
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -11,24 +12,41 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-
   const [selected, setSelected] = useState(0)
-  const handleClick =()=>{
+  const [votes, setVotes] = useState( () =>{
+      let objetos = {}
+      for (let i=0; i<anecdotes.length;i++){
+        objetos[i]=0
+      }
+      return(objetos)
+    }
+  )
+  console.log(votes)
+  //Metodos
 
+  const handleChangeAnecdote =()=>{
     const getRandomInt = (min,max) =>{
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min) + min);
     }
-
     const tamañoArray = anecdotes.length
     setSelected(getRandomInt(0,tamañoArray))
   }
+
+  const handleVote = (selected) =>{
+    const copyObjeto = {...votes}
+    copyObjeto[selected]+=1
+    setVotes(copyObjeto)
+  }
+
   return (
     <div>
       {anecdotes[selected]}
       <br></br>
-      <button onClick={handleClick}>next anecdote</button>
+      <p>has {votes[selected]} votes</p>
+      <button onClick={() => handleVote(selected)}>vote</button>
+      <button onClick={handleChangeAnecdote}>next anecdote</button>
     </div>
   )
 }
