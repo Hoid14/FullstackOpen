@@ -6,8 +6,8 @@ const Button = ({handleclick, text}) => {
     </button>
   )
 }
-const Statistics = ({good,neutral,bad}) => {
-
+const Statistics = (props) => {
+  const {good,neutral,bad} = props
   const totalComentarios = () => good+neutral+bad
   const puntuacionPromedio = () =>{
     return(
@@ -22,12 +22,22 @@ const Statistics = ({good,neutral,bad}) => {
   return(
     <>
     <h1>statistics</h1>
-    <p>good {good}</p>
-    <p>neutral {neutral}</p>
-    <p>bad {bad}</p>
-    <p>all {totalComentarios()}</p>
-    <p>average {puntuacionPromedio()}</p>
-    <p>positive {porcentajeComPositivos()} %</p> 
+    {totalComentarios() > 0 &&
+      <>
+      <p>good {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
+      <p>all {totalComentarios()}</p>
+      <p>average {puntuacionPromedio()}</p>
+      <p>positive {porcentajeComPositivos()} %</p> 
+      </>
+    }
+
+    {
+      totalComentarios() === 0 && 
+      <p>No feedback given</p>
+    }
+    
   </>
   )
   
