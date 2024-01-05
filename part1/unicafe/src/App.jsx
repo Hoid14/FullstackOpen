@@ -6,6 +6,13 @@ const Button = ({handleclick, text}) => {
     </button>
   )
 }
+const StatisticLine = (props) => {
+  const {value, text} = props
+  console.log(props)
+  return(
+    <p>{text} {value}</p>
+  )
+}
 const Statistics = (props) => {
   const {good,neutral,bad} = props
   const totalComentarios = () => good+neutral+bad
@@ -24,12 +31,12 @@ const Statistics = (props) => {
     <h1>statistics</h1>
     {totalComentarios() > 0 &&
       <>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {totalComentarios()}</p>
-      <p>average {puntuacionPromedio()}</p>
-      <p>positive {porcentajeComPositivos()} %</p> 
+      <StatisticLine text ='good' value={good}/>
+      <StatisticLine text ='neutral' value={neutral}/>
+      <StatisticLine text ='bad' value={bad}/>
+      <StatisticLine text ='all' value={totalComentarios()}/>
+      <StatisticLine text='average' value={puntuacionPromedio()}/>
+      <StatisticLine text='positive' value={porcentajeComPositivos()}/>
       </>
     }
 
@@ -59,13 +66,7 @@ const App = () => {
       <Button handleclick={()=>handleClick(good, setGood)} text='good'/>
       <Button handleclick={()=>handleClick(neutral, setNeutral)} text='neutral'/>
       <Button handleclick={()=>handleClick(bad, setBad)} text='bad'/>
-      
       <Statistics good={good} neutral={neutral} bad={bad} />
-      
-      
-
-
-
     </div>
   )
 }
