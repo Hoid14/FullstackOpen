@@ -6,15 +6,7 @@ const Button = ({handleclick, text}) => {
     </button>
   )
 }
-const App = () => {
-  // guarda los clics de cada boton en su propio estado
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
-
-  const handleClick = (value, funcionModificadora) =>{
-    funcionModificadora(value+1)
-  }
+const Statistics = ({good,neutral,bad}) => {
 
   const totalComentarios = () => good+neutral+bad
   const puntuacionPromedio = () =>{
@@ -28,20 +20,39 @@ const App = () => {
     )
   }
   return(
+    <>
+    <h1>statistics</h1>
+    <p>good {good}</p>
+    <p>neutral {neutral}</p>
+    <p>bad {bad}</p>
+    <p>all {totalComentarios()}</p>
+    <p>average {puntuacionPromedio()}</p>
+    <p>positive {porcentajeComPositivos()} %</p> 
+  </>
+  )
+  
+}
+const App = () => {
+  // guarda los clics de cada boton en su propio estado
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  const handleClick = (value, funcionModificadora) =>{
+    funcionModificadora(value+1)
+  }
+
+  
+  return(
     <div>
       <h1>give feedback</h1>
       <Button handleclick={()=>handleClick(good, setGood)} text='good'/>
       <Button handleclick={()=>handleClick(neutral, setNeutral)} text='neutral'/>
       <Button handleclick={()=>handleClick(bad, setBad)} text='bad'/>
-      <h1>statistics</h1>
-
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {totalComentarios()}</p>
-      <p>average {puntuacionPromedio()}</p>
-      <p>positive {porcentajeComPositivos()} %</p>
-
+      
+      <Statistics good={good} neutral={neutral} bad={bad} />
+      
+      
 
 
 
