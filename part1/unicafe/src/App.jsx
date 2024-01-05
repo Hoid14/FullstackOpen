@@ -8,7 +8,6 @@ const Button = ({handleclick, text}) => {
 }
 const StatisticLine = (props) => {
   const {value, text} = props
-  console.log(props)
   return(
     <tr>
       <td>{text}</td>
@@ -26,8 +25,10 @@ const Statistics = (props) => {
     )
   }
   const porcentajeComPositivos = () =>{
+    const num= (good/totalComentarios())*100
+    const numRedondeado = num.toFixed(1)
     return(
-      (good/totalComentarios())*100
+      numRedondeado
     )
   }
   return(
@@ -42,8 +43,8 @@ const Statistics = (props) => {
           <StatisticLine text ='bad' value={bad}/>
           <StatisticLine text ='all' value={totalComentarios()}/>
           <StatisticLine text='average' value={puntuacionPromedio()}/>
-          <StatisticLine text='positive' value={porcentajeComPositivos()}/>
-      </tbody>
+          <StatisticLine text='positive' value={porcentajeComPositivos()+' %'}/>
+        </tbody>
       </table>
       
       </>
