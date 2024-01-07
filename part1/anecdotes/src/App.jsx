@@ -72,7 +72,7 @@ const App = () => {
       <button onClick={handleChangeAnecdote}>next anecdote</button>
       <h1>Anecdote with most votes</h1>
       <p>{anecdotes[indexMaxValue]}</p>
-      <p>has {votes[indexMaxValue]}</p>
+      <p>has {votes[indexMaxValue]} votes</p>
     </div>
   )
 }
