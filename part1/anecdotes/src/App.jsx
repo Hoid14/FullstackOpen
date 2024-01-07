@@ -21,6 +21,8 @@ const App = () => {
       return(objetos)
     }
   )
+  const [indexMaxValue, setIndexMaxValue] = useState(0)
+  
   console.log(votes)
   //Metodos
 
@@ -34,19 +36,43 @@ const App = () => {
     setSelected(getRandomInt(0,tamañoArray))
   }
 
+  
+
+  const getMaxVoteIndex = () => {
+    const copyVotes = {...votes}
+    let maxKey = indexMaxValue
+    let maxValue = copyVotes[maxKey]
+    for (let key in Object.keys(copyVotes)){
+      if (copyVotes[key]>maxValue){
+        maxValue = copyVotes[key]
+        maxKey = key
+      }
+    }
+    if(maxKey !== indexMaxValue){
+      setIndexMaxValue(maxKey)
+    }
+  }
+
   const handleVote = (selected) =>{
     const copyObjeto = {...votes}
     copyObjeto[selected]+=1
     setVotes(copyObjeto)
+    
   }
-
+  console.log("maxkey:",indexMaxValue,"maxvalue:",votes[indexMaxValue])
+  getMaxVoteIndex()
   return (
     <div>
+      
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <br></br>
       <p>has {votes[selected]} votes</p>
       <button onClick={() => handleVote(selected)}>vote</button>
       <button onClick={handleChangeAnecdote}>next anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[indexMaxValue]}</p>
+      <p>has {votes[indexMaxValue]}</p>
     </div>
   )
 }
