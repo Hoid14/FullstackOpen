@@ -6,14 +6,28 @@ const App = () => {
   ]) 
   const [newName, setNewName] = useState('')
 
+
+  const getListaNombres = persons.map(person => (
+    person.name
+  ))
+
+
   const handleSubmit = (event)=>{
     event.preventDefault()
-    const newObject = {
-      name: newName
+    if (getListaNombres.includes(newName)){
+      alert(
+        `${newName} is already added to phonebook`
+      )
+      setNewName('')
     }
-    const listaPersonas = persons.concat(newObject)
-    setPersons(listaPersonas)
-    console.log(listaPersonas);
+    else{
+      const newObject = {
+        name: newName
+      }
+      const listaPersonas = persons.concat(newObject)
+      setPersons(listaPersonas)
+      setNewName('')
+    }
   }
 
   const handleChange = (event)=>{
