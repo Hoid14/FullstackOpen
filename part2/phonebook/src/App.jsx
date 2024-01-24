@@ -19,6 +19,14 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
   
+  // Guardar numeros en el backend
+  const create = (newObject) => {
+    axios.post("http://localhost:3001/persons",newObject)
+    .then(response =>{
+      setPersons(persons.concat(response.data)) //Se crea una nueva lista que une el array "persons" con el nuevo objeto devuelto por el backend
+    })
+  }
+
   const getListaNombres = persons.map(person => (
     person.name
   ))
@@ -45,8 +53,7 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      const listaPersonas = persons.concat(newObject)
-      setPersons(listaPersonas)
+      create(newObject)
       setNewName('')
       setNewNumber('')
     }
