@@ -72,6 +72,15 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
+  const handleEliminate = (id) =>{
+    service
+    .eliminate(id)
+    .then(() =>{
+      const newList = persons.filter(person => person.id !== id)
+      setPersons(newList)
+      console.log("Nueva lista",newList)
+    })
+  }
   
 
   return (
@@ -89,7 +98,7 @@ const App = () => {
       handleChangeNumber={handleChangeNumber}
       />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow}/>
+      <Persons personsToShow={personsToShow} handleEliminate={handleEliminate}/>
     </div>
   )
 }

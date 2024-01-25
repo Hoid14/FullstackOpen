@@ -1,6 +1,10 @@
-const Person = ({person}) =>{
+const Person = ({person, handleEliminate}) =>{
     return(
-        <div>{person.name} {person.number}</div>
+        <div>
+            <span>{person.name} {person.number} <button onClick={()=>handleEliminate(person.id)}>delete</button></span>
+        </div>
+        
+       
     )
 }
 export default Person
