@@ -2,30 +2,25 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
+import service from './services/phonebooks'
 const App = () => {
   const [persons, setPersons] = useState([])
 
-  useEffect(() =>{
-    axios
-    .get("http://localhost:3001/persons")
-    .then(
-      response => {
-        setPersons(response.data)
-      }
-    )
-  },[]) //Hace que se ejecute solo una vez
+  useEffect(() => {
+    service
+    .getAll()
+    .then(response =>{
+      setPersons(response)
+      })
+  }, [])//Hace que se ejecute solo una vez
+  
+  
+  
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
   
-  // Guardar numeros en el backend
-  const create = (newObject) => {
-    axios.post("http://localhost:3001/persons",newObject)
-    .then(response =>{
-      setPersons(persons.concat(response.data)) //Se crea una nueva lista que une el array "persons" con el nuevo objeto devuelto por el backend
-    })
-  }
+  
 
   const getListaNombres = persons.map(person => (
     person.name
@@ -53,7 +48,13 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      create(newObject)
+      service
+      .create(newObject) //Crear nuevo objeto
+      .then(response =>{ //Devuelve el objeto solo (response.data)
+        const listaActualizada = persons.concat(response)
+        setPersons(listaActualizada)
+        console.log(listaActualizada)
+      })
       setNewName('')
       setNewNumber('')
     }
