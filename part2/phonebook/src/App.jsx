@@ -22,9 +22,7 @@ const App = () => {
   
   
 
-  const getListaNombres = persons.map(person => (
-    person.name
-  ))
+  
 
   const personsToShow = persons.filter(person =>{
     let currentPerson= person.name.toLowerCase()
@@ -36,12 +34,34 @@ const App = () => {
   
   const handleSubmit = (event)=>{
     event.preventDefault()
-    if (getListaNombres.includes(newName)){
-      alert(
-        `${newName} is already added to phonebook`
-      )
-      setNewName('')
-      setNewNumber('')
+    console.log("Nombre",newName)
+    console.log("Numero",newNumber)
+    const getPerson = persons
+    .filter(person=>{
+      return person.name === newName 
+    })
+    console.log("Lista devuelta por el filtro",getPerson)
+    console.log("tamaño de la lista", getPerson.length)
+    console.log("verdad o falso",getPerson.length>0)
+    if (getPerson.length>0 && getPerson[0].name === newName){
+      window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+        console.log("objeto sin modificar",getPerson[0])
+        const copyObjetct = {...getPerson[0], number:newNumber}
+        console.log("objeto copia modificado",copyObjetct)
+        console.log("id",getPerson[0].id)
+        service
+        .update(getPerson[0].id, copyObjetct)
+        .then(response =>{
+          console.log("respuesta del servidor",response)
+          setPersons(persons.map(person =>(
+            person.id !== getPerson[0].id ? person:response
+          )))
+        })
+        setNewName('')
+        setNewNumber('')
+      
     }
     else{
       const newObject = {
