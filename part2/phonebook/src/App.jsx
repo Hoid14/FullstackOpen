@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Message from './components/Message'
 import service from './services/phonebooks'
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -19,7 +20,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
-  
+  const [message, setMessage] = useState('Mensaje de prueba...')
   
 
   
@@ -43,27 +44,36 @@ const App = () => {
     console.log("Lista devuelta por el filtro",getPerson)
     console.log("tamaño de la lista", getPerson.length)
     console.log("verdad o falso",getPerson.length>0)
-    if (getPerson.length>0 && getPerson[0].name === newName){
-      window.confirm(
-          `${newName} is already added to phonebook, replace the old number with a new one?`
-        )
-        console.log("objeto sin modificar",getPerson[0])
-        const copyObjetct = {...getPerson[0], number:newNumber}
-        console.log("objeto copia modificado",copyObjetct)
-        console.log("id",getPerson[0].id)
-        service
-        .update(getPerson[0].id, copyObjetct)
-        .then(response =>{
-          console.log("respuesta del servidor",response)
-          setPersons(persons.map(person =>(
-            person.id !== getPerson[0].id ? person:response
-          )))
-        })
-        setNewName('')
-        setNewNumber('')
-      
+    if (getPerson.length>0 && getPerson[0].name === newName){ //Se cambian los datos de una persona
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+          console.log("objeto sin modificar",getPerson[0])
+          const copyObjetct = {...getPerson[0], number:newNumber}
+          console.log("objeto copia modificado",copyObjetct)
+          console.log("id",getPerson[0].id)
+          service
+          .update(getPerson[0].id, copyObjetct)
+          .then(response =>{
+            console.log("respuesta del servidor",response)
+            setPersons(persons.map(person =>(
+              person.id !== getPerson[0].id ? person:response
+            )))
+          })
+          setNewName('')
+          setNewNumber('')
+          setMessage(`Changed ${newName}`)
+          setTimeout(()=> {
+            setMessage(null)
+          },5000)
+        }
+      else {
+        setMessage(`${newName} was not changed`)
+        setTimeout(()=> {
+          setMessage(null)
+        },5000)
+      }
+        
     }
-    else{
+    else{// Se agrega una persona
       const newObject = {
         name: newName,
         number: newNumber
@@ -77,6 +87,7 @@ const App = () => {
       })
       setNewName('')
       setNewNumber('')
+      setMessage(`Added ${newObject.name}`)
     }
   }
 
@@ -106,6 +117,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {message !== null &&
+        <Message message = {message} />
+      }
       <Filter valor={newFilter} alCambiar={handleChangeFilter}/>
 
       <h2>add a new</h2>
