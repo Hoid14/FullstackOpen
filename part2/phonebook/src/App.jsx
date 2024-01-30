@@ -20,7 +20,11 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
-  const [message, setMessage] = useState('Mensaje de prueba...')
+  const [message, setMessage] = useState(
+    {message: 'Mensaje de prueba...',
+    error: false
+    }
+    )
   
 
   
@@ -38,7 +42,7 @@ const App = () => {
     console.log("Nombre",newName)
     console.log("Numero",newNumber)
     const getPerson = persons
-    .filter(person=>{
+    .filter(person=>{ // se puede reemplazar con find
       return person.name === newName 
     })
     console.log("Lista devuelta por el filtro",getPerson)
@@ -58,15 +62,26 @@ const App = () => {
               person.id !== getPerson[0].id ? person:response
             )))
           })
+          .catch(()=>{
+            setNewName('')
+            setNewNumber('')
+            setMessage({message:`Information of ${getPerson[0].name} has already beed removed from server`, error: true})
+            setPersons(
+              persons.filter(person => (
+                person.id !==getPerson[0].id
+              ))
+            )
+          })
+          console.log("siguio la ejecucion")
           setNewName('')
           setNewNumber('')
-          setMessage(`Changed ${newName}`)
+          setMessage({message: `Changed ${newName}`, error: false})
           setTimeout(()=> {
             setMessage(null)
           },5000)
         }
       else {
-        setMessage(`${newName} was not changed`)
+        setMessage({message: `${newName} was not changed`, error: false})
         setTimeout(()=> {
           setMessage(null)
         },5000)
@@ -88,6 +103,9 @@ const App = () => {
       setNewName('')
       setNewNumber('')
       setMessage(`Added ${newObject.name}`)
+      setTimeout(()=> {
+        setMessage(null)
+      },5000)
     }
   }
 
@@ -118,7 +136,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       {message !== null &&
-        <Message message = {message} />
+        <Message message = {message.message} error = {message.error}/>
       }
       <Filter valor={newFilter} alCambiar={handleChangeFilter}/>
 
