@@ -36,19 +36,18 @@ const App = () => {
       })
     }
   }
-  console.log(getPaisesToShow()[0])
-
-  const uniqueCountry = getPaisesToShow().length === 1
+  
+  const countryToShow = getPaisesToShow().length === 1
   ? getPaisesToShow()[0]
-  : {}
-
-  const lenguajes = getPaisesToShow().length === 1
-  ? getPaisesToShow()[0].languages
-  : {}
+  :{}
   
   const handleChange = (event) => {
     const current = event.target.value
     setValue(current)
+  }
+
+  const handleClick = (event) =>{
+    console.log(event)
   }
   return (
     <>
@@ -64,22 +63,22 @@ const App = () => {
 
         getPaisesToShow().map(pais => (
           <div key={pais.name.common}>
-            {pais.name.common}
+            {pais.name.common} <button onClick={()=>handleClick(pais)}>show</button>
           </div>
         ))}
 
         {getPaisesToShow().length ===1 &&
         <>
-          <h1>{getPaisesToShow()[0].name.common}</h1>
-          <p>capital {getPaisesToShow()[0].capital[0]}</p>
-          <p>area {getPaisesToShow()[0].area}</p>
+          <h1>{countryToShow.name.common}</h1>
+          <p>capital {countryToShow.capital[0]}</p>
+          <p>area {countryToShow.area}</p>
           <h3>languages:</h3>
           <ul>
-            {Object.keys(lenguajes).map(key =>(
-              <li key = {key}>{lenguajes[key]}</li>
+            {Object.keys(countryToShow.languages).map(key =>(
+              <li key = {key}>{countryToShow.languages[key]}</li>
             ))}
           </ul>
-          <img src={uniqueCountry.flags.svg} alt={uniqueCountry.flags.alt} />
+          <img src={countryToShow.flags.svg} alt={countryToShow.flags.alt} />
 
         </>
         }
