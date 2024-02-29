@@ -5,6 +5,10 @@ const App = () => {
   const [value, setValue] = useState('')
   const [paises, setPaises] = useState([]) // Lista de paises con su informacion
   const [countryToShow, setCountryToshow] =useState(null)
+  const [capitalWather, setCapitalWeather]=useState(null)
+  const api_key = import.meta.env.VITE_SOME_KEY
+
+// variable api_key now has the value set in startup
   useEffect( ()=>{
     axios
     .get(
@@ -40,7 +44,6 @@ const App = () => {
   }
 
   const currentListCountry = getPaisesToShow(); // en todos los renderizados se establece esta constante con una lista de paises
-
   
   useEffect(() => {
     if (currentListCountry.length === 1) {
@@ -57,6 +60,25 @@ const App = () => {
   const handleClick = (pais) =>{
     setCountryToshow(pais)
   }
+  
+  
+  
+  useEffect( () =>{ //Obtener el clima de la capital
+    if(countryToShow !== null){
+      axios
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${countryToShow.capitalInfo.latlng[0]}&lon=${countryToShow.capitalInfo.latlng[1]}&appid=${api_key}`
+      )
+      .then(response =>{
+        setCapitalWeather(response.data)
+      })
+    }
+    
+  }, [countryToShow,api_key])
+
+
+  
+  
   return (
     <>
       find countries <input value={value} onChange={handleChange} />
@@ -89,6 +111,14 @@ const App = () => {
           <img src={countryToShow.flags.svg} alt={countryToShow.flags.alt} />
 
         </>
+        }
+        {capitalWather!==null && countryToShow!==null &&
+          <>
+          <h1>Weather in {countryToShow.capital[0]}</h1>
+          <p>temperature {capitalWather.main.temp-273.15} Celcius</p>
+          <img src="https://openweathermap.org/img/wn/02n@2x.png" alt="weather_icon" />
+          <p>wind {capitalWather.wind.speed} m/s</p>
+          </>
         }
       </div>
     </>
