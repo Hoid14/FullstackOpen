@@ -62,15 +62,15 @@ const App = () => {
               person.id !== getPerson[0].id ? person:response
             )))
           })
-          .catch(()=>{
+          .catch(error=>{
             setNewName('')
             setNewNumber('')
-            setMessage({message:`Information of ${getPerson[0].name} has already beed removed from server`, error: true})
-            setPersons(
+            setMessage({message:error.response.data.error, error: true})
+            /* setPersons(
               persons.filter(person => (
                 person.id !==getPerson[0].id
               ))
-            )
+            ) */
           })
           console.log("siguio la ejecucion")
           setNewName('')
@@ -98,11 +98,15 @@ const App = () => {
       .then(response =>{ //Devuelve el objeto solo (response.data)
         const listaActualizada = persons.concat(response)
         setPersons(listaActualizada)
+        setMessage({message:`Added ${newObject.name}`, error: false})
         console.log(listaActualizada)
+      })
+      .catch(error=>{
+        setMessage({message: error.response.data.error, error:true})
       })
       setNewName('')
       setNewNumber('')
-      setMessage(`Added ${newObject.name}`)
+      
       setTimeout(()=> {
         setMessage(null)
       },5000)
@@ -127,6 +131,7 @@ const App = () => {
     .then(() =>{
       const newList = persons.filter(person => person.id !== id)
       setPersons(newList)
+      setMessage({message: `Person successfully deleted`, error: false})
       console.log("Nueva lista",newList)
     })
   }

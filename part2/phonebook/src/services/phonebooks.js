@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Debido a nuestra situación, tanto el frontend como el backend están en la misma dirección, podemos declarar baseUrl como una URL relativa . Esto significa que podemos omitir la parte que declara el servidor.
-const baseUrl = '/api/persons'
+const baseUrl = '/api/people'
                 
 
 const getAll = () => {
